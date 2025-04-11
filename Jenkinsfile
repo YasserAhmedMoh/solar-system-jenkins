@@ -39,7 +39,7 @@ pipeline {
          stage('Test'){
                 
                     steps {
-                        withCredentials([usernamePassword(credentialsId: '', usernameVariable: 'MANGO_USER', passwordVariable: 'MANGO_PASSWORD')]) {
+                        withCredentials([usernamePassword(credentialsId: 'mongo-db-credentials', usernameVariable: 'mongo-db-username', passwordVariable: 'mongo-db-password')]) {
                             
                             sh 'npm test'
                         }
