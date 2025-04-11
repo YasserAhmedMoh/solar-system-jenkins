@@ -3,13 +3,7 @@ pipeline {
     tools{
         nodejs 'nodejs-22-6-0'
     }
-    environment {
-        MONGO_URI = "mongodb+srv://supercluster.d83jj.mongodb.net/superData"
-        MONGO_DB_CREDS = credentials('mongo-db-credentials')
-        MONGO_USERNAME = credentials('mongo-db-username')
-        MONGO_PASSWORD = credentials('mongo-db-password')
-        SONAR_SCANNER_HOME = tool 'sonarqube-scanner-610';
-    }
+    
 
     stages{
         stage('Install Dependencies'){
@@ -43,16 +37,16 @@ pipeline {
           //  }
       //  }
          stage('Test'){
-                   options { retry(2) }
+                
                     steps {
-                        sh 'echo Colon-Separated - $MONGO_DB_CREDS'
-                        sh 'echo Username - $MONGO_DB_CREDS_USR'
-                        sh 'echo Password - $MONGO_DB_CREDS_PSW'
-                        sh 'npm test' 
-            
-            
-                           junit 'target/surefire-reports/*.xml'
-                           
+                        withCredentials([usernamePassword(credentialsId: '', usernameVariable: 'MANGO_USER', passwordVariable: 'MANGO_PASSWORD')]) {
+                            
+                            sh 'npm test'
+                        }
+                        junit 'build/test-results/test/*.xml' // Adjust path if needed
+                    }
+                
+
                         
                     }
                 }
