@@ -38,10 +38,10 @@ pipeline {
          stage('Test'){
                     steps{
                         
-                         //  withcredentials([usernamePassword(credentialsid:'',passwordVariable:'MANGO_PASSWORD',usernameVariable:'MANGO_USERNAME')]){
+                           withcredentials([usernamePassword(credentialsid:'',passwordVariable:'MANGO_PASSWORD',usernameVariable:'MANGO_USERNAME')]){
                             sh 'npm test'
-                         //  }
-                        junit 'target/surefire-reports/*.xml'
+                           }
+                           junit 'target/surefire-reports/*.xml'
                            
                         
                     }
