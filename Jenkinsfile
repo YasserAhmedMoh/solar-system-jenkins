@@ -3,6 +3,9 @@ pipeline {
     tools{
         nodejs 'nodejs-22-6-0'
     }
+    environment {
+        MONGO_URI = "mongodb+srv://supercluster.d83jj.mongodb.net/superData"
+    }
     
 
     stages{
@@ -39,9 +42,9 @@ pipeline {
          stage('Test'){
                 
                     steps {
-                        withCredentials([usernamePassword(credentialsId: 'mongo-db-credentials', usernameVariable: 'mongo-db-username', passwordVariable: 'mongo-db-password')]) {
-                            
-                            sh 'npm test'
+                       
+                        withCredentials([usernamePassword(credentialsId: '', passwordVariable: 'MONGO_PASSWORD', usernameVariable: 'MONGO_USERNAME')]) {
+                                sh 'npm test'
                         }
                         junit 'build/test-results/test/*.xml' // Adjust path if needed
                     }
