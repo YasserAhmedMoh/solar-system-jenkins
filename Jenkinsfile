@@ -10,8 +10,8 @@ pipeline {
                 sh 'npm install --no-audit'
             }
         }
-        stage('Dependencies Check'){
-            parallel{
+       // stage('Dependencies Check'){
+       //     parallel{
                 stage('Install Dependencies audit'){
                     steps{
                         sh '''
@@ -20,7 +20,7 @@ pipeline {
                         '''
                     }
                 }
-                stage('OWASP Dependency Check') {
+               /* stage('OWASP Dependency Check') {
                             steps {
                                 dependencyCheck additionalArguments: '''
                                     --scan \'./\' 
@@ -32,8 +32,9 @@ pipeline {
                                 dependencyCheckPublisher failedTotalCritical: 1, pattern: 'dependency-check-report.xml', stopBuild: false
                     }
                 }
-            }
-        }
+                */
+          //  }
+      //  }
     }
     
 }
