@@ -44,7 +44,9 @@ pipeline {
                     steps {
                        
                         withCredentials([usernamePassword(credentialsId: 'mongo-db-credentials', passwordVariable: 'MONGO_PASSWORD', usernameVariable: 'MONGO_USERNAME')]) {
+                            withEnv(["MONGO_URI=mongodb+srv://${MONGO_USERNAME}:${MONGO_PASSWORD}@supercluster.d83jj.mongodb.net/superData?retryWrites=true&w=majority"]) {
                                 sh 'npm test'
+                            }
                         }
                         junit 'build/test-results/test/*.xml' // Adjust path if needed
                     }
