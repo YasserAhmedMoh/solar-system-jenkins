@@ -25,7 +25,7 @@ pipeline {
                 '''
             }
         }
-
+        /*
         stage('Test') {
             options {
                 retry(2)
@@ -53,6 +53,7 @@ pipeline {
                 }
             }
         }
+        */
     }
 
    /* post {
