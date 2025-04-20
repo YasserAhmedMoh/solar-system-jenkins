@@ -6,10 +6,7 @@ pipeline {
     }
 
     environment {
-        MONGO_URI = "mongodb+srv://supercluster.d83jj.mongodb.net/superData"
-        MONGO_DB_CREDS = credentials('mongo-db-credentials')
-        MONGO_USERNAME = credentials('MONGO_USERNAME')
-        MONGO_PASSWORD = credentials('MONGO_PASSWORD')
+        MONGO_URI_BASE = "supercluster.d83jj.mongodb.net/superData"
     }
 
     stages {
@@ -29,46 +26,39 @@ pipeline {
             }
         }
 
-        // Uncomment if you want to use OWASP check
-        /*
-        stage('OWASP Dependency Check') {
-            steps {
-                dependencyCheck additionalArguments: '''
-                    --scan './' 
-                    --out './'  
-                    --format 'ALL' 
-                    --disableYarnAudit 
-                    --prettyPrint
-                ''', odcInstallation: 'OWASP-DepCheck-10'
-
-                dependencyCheckPublisher(
-                    failedTotalCritical: 1,
-                    pattern: 'dependency-check-report.xml',
-                    stopBuild: false
-                )
-            }
-        }
-        */
-
         stage('Test') {
             options {
                 retry(2)
             }
             steps {
-                sh 'echo Colon-Separated - $MONGO_DB_CREDS'
-                sh 'echo Username - $MONGO_DB_CREDS_USR'
-                sh 'echo Password - $MONGO_DB_CREDS_PSW'
-                sh 'npm test'
+                withCredentials([
+                    usernamePassword(
+                        credentialsId: 'mongo-db-credentials',
+                        usernameVariable: 'MONGO_USERNAME',
+                        passwordVariable: 'MONGO_PASSWORD'
+                    )
+                ]) {
+                    script {
+                        env.MONGO_URI = "mongodb+srv://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_URI_BASE}?retryWrites=true&w=majority"
+                    }
+
+                    // Debug: Show partial URI (mask password)
+                    sh '''
+                        echo "MongoDB URI (masked):"
+                        echo "$MONGO_URI" | sed -E "s#(mongodb\\+srv://[^:]+):[^@]+#\\1:*****#"
+                    '''
+
+                    // Run tests
+                    sh 'npm test'
+                }
             }
         }
-
     }
-/*
-    post {
+
+   /* post {
         always {
-            junit 'build/test-results/test/*.xml' // Adjust path if needed
+            // Optional: Adjust the path to your test result XMLs
+            junit 'build/test-results/test/*.xml'
         }
-    }
-    */
+    }*/
 }
-
