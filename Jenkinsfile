@@ -5,10 +5,10 @@ pipeline {
         nodejs 'nodejs-22-6-0'
     }
 
-    environment {
-        MONGO_URI_BASE = "supercluster.d83jj.mongodb.net/superData"
+   // environment {
+      //  MONGO_URI_BASE = "supercluster.d83jj.mongodb.net/superData"
        // MONGO_URI_BASE = "mongodb://localhost:27017/superData"
-    }
+   // }
 
     stages {
 
@@ -40,7 +40,7 @@ pipeline {
                     )
                 ]) {
                     script {
-                        env.MONGO_URI = "mongodb+srv://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_URI_BASE}?retryWrites=true&w=majority"
+                        env.MONGO_URI = "mongodb+srv://superuser:superpassword@supercluster.d83jj.mongodb.net/superData?retryWrites=true&w=majority"
                     }
                     sh 'npm test'
                 }
