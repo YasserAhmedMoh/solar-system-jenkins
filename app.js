@@ -12,10 +12,11 @@ const serverless = require('serverless-http')
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, '/')));
 app.use(cors())
+const mongoose = require('mongoose');
 
-mongoose.connect(process.env.MONGO_URI, {
-    user: process.env.MONGO_USERNAME,
-    pass: process.env.MONGO_PASSWORD,
+const MONGO_URI = "mongodb+srv://superuser:superpassword@supercluster.d83jj.mongodb.net/superData?retryWrites=true&w=majority";
+
+mongoose.connect(MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 }, function(err) {
