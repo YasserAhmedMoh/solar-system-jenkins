@@ -6,7 +6,8 @@ pipeline {
     }
 
     environment {
-        MONGO_URI_BASE = "supercluster.d83jj.mongodb.net/superData"
+       // MONGO_URI_BASE = "supercluster.d83jj.mongodb.net/superData"
+        MONGO_URI_BASE = "mongodb://localhost:27017/superData"
     }
 
     stages {
@@ -25,7 +26,7 @@ pipeline {
                 '''
             }
         }
-        /*
+        
         stage('Test') {
             options {
                 retry(2)
@@ -38,22 +39,14 @@ pipeline {
                         passwordVariable: 'MONGO_PASSWORD'
                     )
                 ]) {
-                    script {
-                        env.MONGO_URI = "mongodb+srv://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_URI_BASE}?retryWrites=true&w=majority"
-                    }
-
-                    // Debug: Show partial URI (mask password)
-                    sh '''
-                        echo "MongoDB URI (masked):"
-                        echo "$MONGO_URI" | sed -E "s#(mongodb\\+srv://[^:]+):[^@]+#\\1:*****#"
-                    '''
-
-                    // Run tests
+             //       script {
+             //           env.MONGO_URI = "mongodb+srv://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_URI_BASE}?retryWrites=true&w=majority"
+             //       }
                     sh 'npm test'
                 }
             }
         }
-        */
+        
     }
 
    /* post {
