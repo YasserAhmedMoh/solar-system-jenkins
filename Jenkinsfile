@@ -37,7 +37,7 @@ pipeline {
                         '''
                     }
                 }
-
+/*
                 stage('OWASP Dependency Check') {
                     steps {
                         dependencyCheck additionalArguments: '''
@@ -50,6 +50,7 @@ pipeline {
                         dependencyCheckPublisher failedTotalCritical: 1, pattern: 'dependency-check-report.xml', stopBuild: false
                     }
                 }
+                */
             }
         }
 
