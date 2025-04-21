@@ -39,10 +39,11 @@ pipeline {
                         passwordVariable: 'MONGO_PASSWORD'
                     )
                 ]) {
-                    script {
-                        env.MONGO_URI = "mongodb+srv://superuser:superpassword@supercluster.d83jj.mongodb.net/superData?retryWrites=true&w=majority"
-                    }
-                    sh 'npm test'
+                    sh '''
+                        export MONGO_URI="mongodb+srv://superuser:superpassword@supercluster.d83jj.mongodb.net/superData?retryWrites=true&w=majority"
+                        echo "Connecting to MongoDB URI: $MONGO_URI"
+                        MONGO_URI=$MONGO_URI npm test
+                    '''
                 }
             }
         }
